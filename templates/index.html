@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCHOOL NO. 35 - Главная</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-school"></i> SCHOOL NO. 35</h1>
+            <div class="user-info">
+                <span id="userName">{% if session.get('username') %}
+    <p>{{ session['username'] }}</p>
+    <p>Монеты: {{ session.get('coins', 0) }}</p>
+    <a href="/logout">Выйти</a>
+{% else %}
+    <p>Вы не вошли в систему</p>
+    <a href="/signin">Войти</a>
+{% endif %}</span>
+                <div class="balance">
+                    <i class="fas fa-coins"></i>
+                    <span id="userBalance">500</span> монет
+                </div>
+                <a href="/signin" class="logout-btn">Выйти</a>
+            </div>
+        </header>
+        
+        <main class="dashboard">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-title">АКТИВНЫЕ ЗАДАЧИ</div>
+                        <div class="stat-value" id="activeTasks">4</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-title">ВЫПОЛНЕННЫЕ ЗАДАЧИ</div>
+                        <div class="stat-value" id="completedTasks">3</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-title">ПОЛУЧЕНО КОИНОВ</div>
+                        <div class="stat-value" id="totalCoins">500</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-title">РЕЙТИНГ КЛАССА</div>
+                        <div class="stat-value">2 место</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-container">
+                <div class="main-content">
+                    <section class="tasks-section">
+                        <h2><i class="fas fa-list"></i> АКТИВНЫЕ ЗАДАЧИ</h2>
+                        <div class="tasks-list" id="activeTasksList">
+                            <!-- Задачи будут загружены через JS -->
+                        </div>
+                        
+                        <div class="add-task-section">
+                            <h3>Добавить задание</h3>
+                            <div class="add-task-form">
+                                <input type="text" id="newTaskTitle" placeholder="Название задания">
+                                <textarea id="newTaskDescription" placeholder="Описание задания"></textarea>
+                                <input type="number" id="newTaskReward" placeholder="Награда (монет)">
+                                <button id="addTaskBtn" class="btn-primary">Добавить задание</button>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="activity-history">
+                        <h2><i class="fas fa-history"></i> ИСТОРИЯ АКТИВНОСТИ</h2>
+                        <div class="activity-list">
+                            <div class="activity-item income">
+                                <div class="activity-icon"><i class="fas fa-plus"></i></div>
+                                <div class="activity-details">
+                                    <div class="activity-title">ПОПОЛНЕНИЕ</div>
+                                    <div class="activity-description">Задание: История</div>
+                                </div>
+                                <div class="activity-amount">+70 <i class="fas fa-coins"></i></div>
+                            </div>
+                            <div class="activity-item expense">
+                                <div class="activity-icon"><i class="fas fa-minus"></i></div>
+                                <div class="activity-details">
+                                    <div class="activity-title">УБЫТОК</div>
+                                    <div class="activity-description">Обед в столовой</div>
+                                </div>
+                                <div class="activity-amount">-30 <i class="fas fa-coins"></i></div>
+                            </div>
+                            <div class="activity-item income">
+                                <div class="activity-icon"><i class="fas fa-plus"></i></div>
+                                <div class="activity-details">
+                                    <div class="activity-title">ПОПОЛНЕНИЕ</div>
+                                    <div class="activity-description">Презентация</div>
+                                </div>
+                                <div class="activity-amount">+70 <i class="fas fa-coins"></i></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+                <nav class="sidebar">
+                    <ul class="nav-menu">
+                        <li class="nav-item active"><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                        <li class="nav-item"><a href="tasks.html"><i class="fas fa-tasks"></i> Задания</a></li>
+                        <li class="nav-item"><a href="shop.html"><i class="fas fa-store"></i> Магазин</a></li>
+                        <li class="nav-item"><a href="history.html"><i class="fas fa-history"></i> История</a></li>
+                        <li class="nav-item"><a href="rating.html"><i class="fas fa-chart-line"></i> Рейтинг</a></li>
+                        <li class="nav-item"><a href="#help"><i class="fas fa-question-circle"></i> Помощь</a></li>
+                        <li class="nav-item admin-item"><a href="#admin"><i class="fas fa-user-shield"></i> Панель админа</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Образовательная платформа с аутентификацией © 2026 SCHOOL NO. 35</p>
+            <p class="footer-links">
+                <a href="#privacy">Конфиденциальность</a> | 
+                <a href="#terms">Условия использования</a> | 
+                <a href="#contact">Контакты</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загрузка активных задач на главной странице
+            loadActiveTasksForHome();
+            
+            // Обновление статистики
+            updateStats();
+            
+            // Обработчик добавления задачи
+            document.getElementById('addTaskBtn').addEventListener('click', function() {
+                const title = document.getElementById('newTaskTitle').value;
+                const description = document.getElementById('newTaskDescription').value;
+                const reward = document.getElementById('newTaskReward').value;
+                
+                if (title && description && reward) {
+                    const newTask = {
+                        id: 'task_' + Date.now(),
+                        title: title,
+                        description: description,
+                        reward: parseInt(reward),
+                        subject: "Волонтерство",
+                        status: "active",
+                        dateAdded: new Date().toISOString().split('T')[0]
+                    };
+                    
+                    // Добавляем задачу в локальное хранилище
+                    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                    tasks.push(newTask);
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    
+                    // Очищаем форму
+                    document.getElementById('newTaskTitle').value = '';
+                    document.getElementById('newTaskDescription').value = '';
+                    document.getElementById('newTaskReward').value = '';
+                    
+                    // Обновляем список задач
+                    loadActiveTasksForHome();
+                    updateStats();
+                    
+                    alert('Задание успешно добавлено!');
+                } else {
+                    alert('Пожалуйста, заполните все поля');
+                }
+            });
+            
+            // Инициализация данных, если они отсутствуют
+            initializeData();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCHOOL NO. 35 - Магазин</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-school"></i> SCHOOL NO. 35</h1>
+            <div class="user-info">
+                <span id="userName">Иван Петров</span>
+                <div class="balance">
+                    <i class="fas fa-coins"></i>
+                    <span id="userBalance">500</span> монет
+                </div>
+                <a href="login.html" class="logout-btn">Выйти</a>
+            </div>
+        </header>
+        
+        <main class="dashboard">
+            <div class="page-header">
+                <h1><i class="fas fa-store"></i> Магазин</h1>
+                <div class="admin-info">
+                    <i class="fas fa-user-tie"></i> Сергей Алексеев (Администрация)
+                </div>
+            </div>
+            
+            <div class="content-container">
+                <div class="main-content full-width">
+                    <div class="shop-filters">
+                        <button class="filter-btn active" data-filter="all">Все товары</button>
+                        <button class="filter-btn" data-filter="school">Школьные принадлежности</button>
+                        <button class="filter-btn" data-filter="privileges">Привилегии</button>
+                        <button class="filter-btn" data-filter="services">Услуги</button>
+                        <button class="filter-btn" data-filter="other">Другое</button>
+                    </div>
+                    
+                    <div class="shop-grid" id="shopGrid">
+                        <!-- Товары будут загружены через JS -->
+                    </div>
+                </div>
+                
+                <nav class="sidebar">
+                    <ul class="nav-menu">
+                        <li class="nav-item"><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                        <li class="nav-item"><a href="tasks.html"><i class="fas fa-tasks"></i> Задания</a></li>
+                        <li class="nav-item active"><a href="shop.html"><i class="fas fa-store"></i> Магазин</a></li>
+                        <li class="nav-item"><a href="history.html"><i class="fas fa-history"></i> История</a></li>
+                        <li class="nav-item"><a href="rating.html"><i class="fas fa-chart-line"></i> Рейтинг</a></li>
+                        <li class="nav-item"><a href="#help"><i class="fas fa-question-circle"></i> Помощь</a></li>
+                        <li class="nav-item admin-item"><a href="#admin"><i class="fas fa-user-shield"></i> Панель админа</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Образовательная платформа с аутентификацией © 2026 SCHOOL NO. 35</p>
+            <p class="footer-links">
+                <a href="#privacy">Конфиденциальность</a> | 
+                <a href="#terms">Условия использования</a> | 
+                <a href="#contact">Контакты</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для покупки товара -->
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modalTitle">Покупка товара</h2>
+            <div id="modalDescription"></div>
+            <div class="modal-price">
+                Цена: <span id="modalPrice"></span> <i class="fas fa-coins"></i>
+            </div>
+            <div class="modal-balance">
+                Ваш баланс: <span id="modalBalance"></span> <i class="fas fa-coins"></i>
+            </div>
+            <div class="modal-actions">
+                <button id="confirmPurchaseBtn" class="btn-primary">Купить</button>
+                <button id="cancelPurchaseBtn" class="btn-secondary">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загрузка товаров
+            loadShopItems();
+            
+            // Инициализация фильтров
+            initFilters();
+            
+            // Инициализация модального окна
+            initPurchaseModal();
+            
+            // Инициализация данных, если они отсутствуют
+            initializeData();
+        });
+    </script>
+</body>
+</html>

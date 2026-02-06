@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCHOOL NO. 35 - Лента задач</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#3498db">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1># Лента задач</h1>
+            <p style="color: var(--gray-color); font-size: 14px; margin-bottom: 10px;">Образовательная платформа с аутентификацией</p>
+            
+            <div class="user-info">
+                <div style="font-weight: bold; color: var(--primary-color);">Иван Петров</div>
+                <div class="balance">
+                    <i class="fas fa-coins"></i>
+                    <span id="userBalance">500</span> монет
+                </div>
+                <a href="login.html" class="logout-btn">Выйти</a>
+            </div>
+        </header>
+        
+        <main class="dashboard">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
+                <div class="stat-card">
+                    <div class="stat-title">АКТИВНЫЕ ЗАДАЧИ</div>
+                    <div class="stat-value">4</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">ВЫПОЛНЕННЫЕ ЗАДАЧИ</div>
+                    <div class="stat-value">3</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">ПОЛУЧЕНО КОИНОВ</div>
+                    <div class="stat-value">500</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">РЕЙТИНГ КЛАССА</div>
+                    <div class="stat-value">2 место</div>
+                </div>
+            </div>
+            
+            <div class="content-container">
+                <div class="main-content">
+                    <div class="tasks-tabs">
+                        <button class="tab-btn active">АКТИВНЫЕ ЗАДАЧИ</button>
+                        <button class="tab-btn">ВЫПОЛНЕННЫЕ ЗАДАЧИ</button>
+                    </div>
+                    
+                    <div class="tab-content active">
+                        <div class="tasks-grid">
+                            <div class="task-card">
+                                <div class="task-card-header">
+                                    <div class="task-card-subject">АЛГЕБРА</div>
+                                    <div class="task-card-reward">50 <i class="fas fa-coins"></i></div>
+                                </div>
+                                <div class="task-card-description">Решить задачи по алгебре.</div>
+                                <div class="task-card-footer">
+                                    <div class="task-card-date">До: 10.01.2026</div>
+                                    <button class="btn-primary">Загрузить работу</button>
+                                </div>
+                            </div>
+                            
+                            <div class="task-card">
+                                <div class="task-card-header">
+                                    <div class="task-card-subject">ФИЗИКА</div>
+                                    <div class="task-card-reward">70 <i class="fas fa-coins"></i></div>
+                                </div>
+                                <div class="task-card-description">Написать лоб работу №3.</div>
+                                <div class="task-card-footer">
+                                    <div class="task-card-date">До: 12.01.2026</div>
+                                    <button class="btn-primary">Загрузить работу</button>
+                                </div>
+                            </div>
+                            
+                            <div class="task-card">
+                                <div class="task-card-header">
+                                    <div class="task-card-subject">ЛИТЕРАТУРА</div>
+                                    <div class="task-card-reward">40 <i class="fas fa-coins"></i></div>
+                                </div>
+                                <div class="task-card-description">Прочитать произведение.</div>
+                                <div class="task-card-footer">
+                                    <div class="task-card-date">До: 15.01.2026</div>
+                                    <button class="btn-primary">Загрузить работу</button>
+                                </div>
+                            </div>
+                            
+                            <div class="task-card">
+                                <div class="task-card-header">
+                                    <div class="task-card-subject">ИСТОРИЯ</div>
+                                    <div class="task-card-reward">60 <i class="fas fa-coins"></i></div>
+                                </div>
+                                <div class="task-card-description">Посмотреть фильм.</div>
+                                <div class="task-card-footer">
+                                    <div class="task-card-date">До: 08.01.2026</div>
+                                    <button class="btn-primary">Загрузить работу</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="shop-preview">
+                        <h2>ЧТО КУПИТЬ?</h2>
+                        <div class="shop-items">
+                            <div class="shop-item">
+                                <div class="shop-item-icon">
+                                    <i class="fas fa-pen"></i>
+                                </div>
+                                <div class="shop-item-info">
+                                    <div class="shop-item-title">НАБОР РУЧЕК</div>
+                                    <div class="shop-item-description">Набор из 10 ручек разных цветов</div>
+                                </div>
+                                <div class="shop-item-price">50 <i class="fas fa-coins"></i></div>
+                                <button class="btn-small" style="margin-top: 10px;">Купить</button>
+                            </div>
+                            
+                            <div class="shop-item">
+                                <div class="shop-item-icon">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                                <div class="shop-item-info">
+                                    <div class="shop-item-title">Весь магазин</div>
+                                    <div class="shop-item-description">Перейти в магазин для покупки товаров</div>
+                                </div>
+                                <button class="btn-primary" onclick="window.location.href='shop.html'" style="margin-top: 10px;">Перейти</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar">
+                    <nav class="nav-menu">
+                        <li class="nav-item"><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                        <li class="nav-item active"><a href="tasks.html"><i class="fas fa-tasks"></i> Задания</a></li>
+                        <li class="nav-item"><a href="shop.html"><i class="fas fa-store"></i> Магазин</a></li>
+                        <li class="nav-item"><a href="history.html"><i class="fas fa-history"></i> История</a></li>
+                        <li class="nav-item"><a href="rating.html"><i class="fas fa-chart-line"></i> Рейтинг</a></li>
+                        <li class="nav-item"><a href="#help"><i class="fas fa-question-circle"></i> Помощь</a></li>
+                        <li class="nav-item admin-item"><a href="admin.html"><i class="fas fa-user-shield"></i> Панель админа</a></li>
+                    </nav>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Образовательная платформа с аутентификацией © 2026 SCHOOL NO. 35</p>
+            <p class="footer-links">
+                <a href="#privacy">Конфиденциальность</a> | 
+                <a href="#terms">Условия использования</a> | 
+                <a href="#contact">Контакты</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    const tabIndex = Array.from(tabBtns).indexOf(this);
+                    if (tabContents[tabIndex]) {
+                        tabContents[tabIndex].classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

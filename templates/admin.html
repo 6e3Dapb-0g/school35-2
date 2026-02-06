@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCHOOL NO. 35 - Админ панель</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Дополнительные стили для админки */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .admin-main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .admin-main {
+                grid-template-columns: 1fr 300px;
+            }
+        }
+        
+        .admin-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .admin-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .admin-stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+        
+        .admin-stat-label {
+            font-size: 12px;
+            color: var(--gray-color);
+            text-transform: uppercase;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-action-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .quick-action-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .quick-action-btn i {
+            font-size: 24px;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .admin-table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .admin-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .admin-table tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .edit-btn {
+            background: var(--warning-color);
+            color: white;
+        }
+        
+        .delete-btn {
+            background: var(--danger-color);
+            color: white;
+        }
+        
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .admin-sidebar {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .recent-activity {
+            margin-top: 20px;
+        }
+        
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-info {
+            flex: 1;
+        }
+        
+        .activity-user {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .activity-action {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+        
+        .activity-time {
+            font-size: 11px;
+            color: var(--gray-color);
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="admin-header">
+                <div>
+                    <h1># Панель админа</h1>
+                    <p style="color: var(--gray-color); font-size: 14px; margin-top: 5px;">
+                        <i class="fas fa-user-shield"></i> Управление системой SCHOOL NO. 35
+                    </p>
+                </div>
+                <div class="user-info">
+                    <div style="font-weight: bold; color: var(--primary-color);">
+                        <i class="fas fa-user-tie"></i> Сергей Алексеев<br>
+                        <small style="font-size: 12px; color: var(--gray-color);">Администратор</small>
+                    </div>
+                    <a href="#" onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </a>
+                </div>
+            </div>
+        </header>
+        
+        <main class="dashboard">
+            <div class="admin-stats-grid">
+                <div class="admin-stat-item">
+                    <div class="admin-stat-value" id="totalUsers">0</div>
+                    <div class="admin-stat-label">Пользователей</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-value" id="totalTasks">0</div>
+                    <div class="admin-stat-label">Заданий</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-value" id="totalProducts">0</div>
+                    <div class="admin-stat-label">Товаров</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-value" id="totalTransactions">0</div>
+                    <div class="admin-stat-label">Транзакций</div>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="showAddUserModal()">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Добавить пользователя</span>
+                </button>
+                <button class="quick-action-btn" onclick="showAddTaskModal()">
+                    <i class="fas fa-tasks"></i>
+                    <span>Создать задание</span>
+                </button>
+                <button class="quick-action-btn" onclick="showAddProductModal()">
+                    <i class="fas fa-store"></i>
+                    <span>Добавить товар</span>
+                </button>
+                <button class="quick-action-btn" onclick="showSettingsModal()">
+                    <i class="fas fa-cog"></i>
+                    <span>Настройки системы</span>
+                </button>
+            </div>
+            
+            <div class="admin-main">
+                <div>
+                    <div class="admin-section">
+                        <h2><i class="fas fa-users"></i> Последние пользователи</h2>
+                        <div class="table-container" style="overflow-x: auto;">
+                            <table class="admin-table" id="recentUsersTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Имя</th>
+                                        <th>Логин</th>
+                                        <th>Роль</th>
+                                        <th>Баланс</th>
+                                        <th>Статус</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Данные будут загружены через JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <button onclick="window.location.href='admin-users.html'" class="btn-primary" style="margin-top: 15px;">
+                            <i class="fas fa-list"></i> Все пользователи
+                        </button>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h2><i class="fas fa-tasks"></i> Активные задания</h2>
+                        <div class="table-container" style="overflow-x: auto;">
+                            <table class="admin-table" id="activeTasksTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Название</th>
+                                        <th>Предмет</th>
+                                        <th>Награда</th>
+                                        <th>Срок</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Данные будут загружены через JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h2><i class="fas fa-exchange-alt"></i> Последние транзакции</h2>
+                        <div class="table-container" style="overflow-x: auto;">
+                            <table class="admin-table" id="recentTransactionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Тип</th>
+                                        <th>Сумма</th>
+                                        <th>Пользователь</th>
+                                        <th>Описание</th>
+                                        <th>Дата</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Данные будут загружены через JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="admin-sidebar">
+                    <div class="admin-section">
+                        <h2><i class="fas fa-bolt"></i> Быстрые действия</h2>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button onclick="addCoinsToUser()" class="btn-primary">
+                                <i class="fas fa-coins"></i> Начислить монеты
+                            </button>
+                            <button onclick="removeCoinsFromUser()" class="btn-secondary">
+                                <i class="fas fa-minus-circle"></i> Списать монеты
+                            </button>
+                            <button onclick="sendNotification()" class="btn-primary">
+                                <i class="fas fa-bell"></i> Отправить уведомление
+                            </button>
+                            <button onclick="generateReport()" class="btn-secondary">
+                                <i class="fas fa-file-export"></i> Создать отчет
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section recent-activity">
+                        <h2><i class="fas fa-history"></i> Активность системы</h2>
+                        <div id="systemActivity">
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-user">Сергей Алексеев</div>
+                                    <div class="activity-action">Вошел в систему</div>
+                                </div>
+                                <div class="activity-time">2 мин назад</div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-user">Иван Петров</div>
+                                    <div class="activity-action">Выполнил задание по алгебре</div>
+                                </div>
+                                <div class="activity-time">15 мин назад</div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-user">Мария Иванова</div>
+                                    <div class="activity-action">Купила набор ручек</div>
+                                </div>
+                                <div class="activity-time">30 мин назад</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Административная панель © 2026 SCHOOL NO. 35</p>
+            <p class="footer-links">
+                <a href="index.html">Вернуться на сайт</a> | 
+                <a href="#logs">Логи системы</a> | 
+                <a href="#support">Техподдержка</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Модальные окна для админки -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('addUserModal')">&times;</span>
+            <h2>Добавить пользователя</h2>
+            <form class="admin-form" onsubmit="addNewUser(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Фамилия Имя</label>
+                        <input type="text" id="newUserName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Логин</label>
+                        <input type="text" id="newUserLogin" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="newUserPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Подтвердите пароль</label>
+                        <input type="password" id="newUserPasswordConfirm" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Класс</label>
+                        <input type="text" id="newUserClass" placeholder="10А">
+                    </div>
+                    <div class="form-group">
+                        <label>Роль</label>
+                        <select id="newUserRole">
+                            <option value="student">Ученик</option>
+                            <option value="teacher">Учитель</option>
+                            <option value="admin">Администратор</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Начальный баланс</label>
+                    <input type="number" id="newUserBalance" value="100" min="0">
+                </div>
+                
+                <button type="submit" class="btn-auth">Создать пользователя</button>
+            </form>
+        </div>
+    </div>
+    <div class="add-task-section">
+                            <h3>Добавить задание</h3>
+                            <div class="add-task-form">
+                                <input type="text" placeholder="Название задания" required>
+                                <textarea placeholder="Описание задания" required></textarea>
+                                <input type="number" placeholder="Награда (монет)" required>
+                                <button class="btn-primary">Добавить задание</button>
+                            </div>
+                        </div>
+
+    <div id="addCoinsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('addCoinsModal')">&times;</span>
+            <h2>Начислить монеты</h2>
+            <form class="admin-form" onsubmit="processAddCoins(event)">
+                <div class="form-group">
+                    <label>Пользователь</label>
+                    <select id="addCoinsUser" required>
+                        <option value="">Выберите пользователя</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Количество монет</label>
+                    <input type="number" id="addCoinsAmount" value="50" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Причина</label>
+                    <textarea id="addCoinsReason" placeholder="Награда за активность..." rows="3" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-auth">Начислить монеты</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('settingsModal')">&times;</span>
+            <h2>Настройки системы</h2>
+            <form class="admin-form" onsubmit="saveSettings(event)">
+                <div class="form-group">
+                    <label>Название школы</label>
+                    <input type="text" id="schoolName" value="SCHOOL NO. 35" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Начальный баланс</label>
+                        <input type="number" id="defaultBalance" value="100" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Курс монет (1 монета = ? руб)</label>
+                        <input type="number" id="coinRate" value="1" step="0.1" min="0.1" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Дней хранения истории</label>
+                    <input type="number" id="historyDays" value="90" min="30" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Максимальная цена товара</label>
+                    <input type="number" id="maxPrice" value="1000" min="10" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Автоначисление за регистрацию</label>
+                    <select id="autoBonus">
+                        <option value="yes">Да</option>
+                        <option value="no">Нет</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-auth">Сохранить настройки</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script>
+        // Функции для админ панели
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка прав администратора
+            checkAdminAccess();
+            
+            // Загрузка данных
+            loadAdminData();
+            
+            // Инициализация модальных окон
+            initAdminModals();
+        });
+        
+        function checkAdminAccess() {
+            // Проверяем, авторизован ли пользователь как администратор
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (!currentUser.username) {
+                // Пользователь не авторизован
+                alert('Вы не авторизованы!');
+                window.location.href = 'login.html';
+                return false;
+            }
+            
+            if (currentUser.role !== 'admin') {
+                // Пользователь не администратор
+                alert('У вас нет прав для доступа к админ панели!');
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function loadAdminData() {
+            // Загружаем статистику
+            updateAdminStats();
+            
+            // Загружаем последних пользователей
+            loadRecentUsers();
+            
+            // Загружаем активные задания
+            loadActiveTasks();
+            
+            // Загружаем последние транзакции
+            loadRecentTransactions();
+            
+            // Загружаем список пользователей для модальных окон
+            loadUserListForModals();
+        }
+        
+        function updateAdminStats() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            const shopItems = JSON.parse(localStorage.getItem('shopItems') || '[]');
+            const history = JSON.parse(localStorage.getItem('history') || '[]');
+            
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('totalTasks').textContent = tasks.length;
+            document.getElementById('totalProducts').textContent = shopItems.length;
+            document.getElementById('totalTransactions').textContent = history.length;
+        }
+        
+        function loadRecentUsers() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const recentUsers = users.slice(-5).reverse(); // Последние 5 пользователей
+            
+            const tbody = document.querySelector('#recentUsersTable tbody');
+            tbody.innerHTML = '';
+            
+            recentUsers.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${users.length - index}</td>
+                    <td><strong>${user.fullName || 'Не указано'}</strong></td>
+                    <td>${user.username}</td>
+                    <td>${getRoleName(user.role)}</td>
+                    <td>${user.balance || 0} <i class="fas fa-coins"></i></td>
+                    <td><span class="status-badge status-active">Активен</span></td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" onclick="editUser('${user.username}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteUser('${user.username}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function loadActiveTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            const activeTasks = tasks.filter(task => task.status === 'active').slice(0, 5);
+            
+            const tbody = document.querySelector('#activeTasksTable tbody');
+            tbody.innerHTML = '';
+            
+            activeTasks.forEach((task, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${task.subject || 'Задание'}</strong></td>
+                    <td>${task.subject || 'Общее'}</td>
+                    <td>${task.reward || 0} <i class="fas fa-coins"></i></td>
+                    <td>${task.dateAdded || 'Не указан'}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" onclick="editTask('${task.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteTask('${task.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function loadRecentTransactions() {
+            const history = JSON.parse(localStorage.getItem('history') || '[]');
+            const recentTransactions = history.slice(0, 5); // Последние 5 транзакций
+            
+            const tbody = document.querySelector('#recentTransactionsTable tbody');
+            tbody.innerHTML = '';
+            
+            recentTransactions.forEach((transaction, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><span class="${transaction.type === 'income' ? 'income' : 'expense'}">
+                        ${transaction.type === 'income' ? 'Начисление' : 'Списание'}
+                    </span></td>
+                    <td>${transaction.amount || 0} <i class="fas fa-coins"></i></td>
+                    <td>${transaction.username || 'Система'}</td>
+                    <td>${transaction.title || 'Транзакция'}</td>
+                    <td>${transaction.date || 'Не указана'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function loadUserListForModals() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const select = document.getElementById('addCoinsUser');
+            
+            if (select) {
+                select.innerHTML = '<option value="">Выберите пользователя</option>';
+                users.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.username;
+                    option.textContent = `${user.fullName} (${user.username})`;
+                    select.appendChild(option);
+                });
+            }
+        }
+        
+        function getRoleName(role) {
+            const roles = {
+                'student': 'Ученик',
+                'teacher': 'Учитель',
+                'admin': 'Администратор'
+            };
+            return roles[role] || role;
+        }
+        
+        // Модальные окна
+        function initAdminModals() {
+            // Закрытие модальных окон при клике вне их
+            window.addEventListener('click', function(event) {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+        }
+        
+        function showAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+        
+        function showAddCoinsModal() {
+            document.getElementById('addCoinsModal').style.display = 'flex';
+        }
+        
+        function showSettingsModal() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Функции для работы с пользователями
+        function addNewUser(event) {
+            event.preventDefault();
+            
+            const fullName = document.getElementById('newUserName').value;
+            const username = document.getElementById('newUserLogin').value;
+            const password = document.getElementById('newUserPassword').value;
+            const passwordConfirm = document.getElementById('newUserPasswordConfirm').value;
+            const userClass = document.getElementById('newUserClass').value;
+            const role = document.getElementById('newUserRole').value;
+            const balance = parseInt(document.getElementById('newUserBalance').value) || 100;
+            
+            // Проверка паролей
+            if (password !== passwordConfirm) {
+                alert('Пароли не совпадают!');
+                return;
+            }
+            
+            // Проверка существования пользователя
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(u => u.username === username)) {
+                alert('Пользователь с таким логином уже существует!');
+                return;
+            }
+            
+            // Создание нового пользователя
+            const newUser = {
+                username: username,
+                password: password,
+                fullName: fullName,
+                class: userClass,
+                role: role,
+                balance: balance,
+                isActive: true,
+                registrationDate: new Date().toISOString().split('T')[0]
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Закрытие модального окна
+            closeModal('addUserModal');
+            
+            // Обновление данных
+            loadAdminData();
+            
+            // Уведомление
+            alert(`Пользователь ${fullName} успешно создан!`);
+        }
+        
+        function editUser(username) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === username);
+            
+            if (user) {
+                // Здесь можно открыть модальное окно для редактирования
+                alert(`Редактирование пользователя ${user.fullName}. Эта функция будет реализована позже.`);
+            }
+        }
+        
+        function deleteUser(username) {
+            if (confirm(`Вы уверены, что хотите удалить пользователя ${username}?`)) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const filteredUsers = users.filter(u => u.username !== username);
+                
+                localStorage.setItem('users', JSON.stringify(filteredUsers));
+                loadAdminData();
+                
+                alert('Пользователь удален!');
+            }
+        }
+        
+        // Функции для работы с заданиями
+        function editTask(taskId) {
+            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            const task = tasks.find(t => t.id === taskId);
+            
+            if (task) {
+                alert(`Редактирование задания "${task.subject}". Эта функция будет реализована позже.`);
+            }
+        }
+        
+        function deleteTask(taskId) {
+            if (confirm('Вы уверены, что хотите удалить это задание?')) {
+                const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+                const filteredTasks = tasks.filter(t => t.id !== taskId);
+                
+                localStorage.setItem('tasks', JSON.stringify(filteredTasks));
+                loadAdminData();
+                
+                alert('Задание удалено!');
+            }
+        }
+        
+        // Функции для работы с монетами
+        function addCoinsToUser() {
+            document.getElementById('addCoinsModal').style.display = 'flex';
+        }
+        
+        function processAddCoins(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('addCoinsUser').value;
+            const amount = parseInt(document.getElementById('addCoinsAmount').value) || 0;
+            const reason = document.getElementById('addCoinsReason').value;
+            
+            if (!username || amount <= 0 || !reason) {
+                alert('Заполните все поля корректно!');
+                return;
+            }
+            
+            // Начисление монет
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.username === username);
+            
+            if (userIndex === -1) {
+                alert('Пользователь не найден!');
+                return;
+            }
+            
+            users[userIndex].balance = (users[userIndex].balance || 0) + amount;
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Добавление в историю
+            const history = JSON.parse(localStorage.getItem('history') || '[]');
+            history.unshift({
+                id: 'hist_' + Date.now(),
+                title: `Админ: ${reason}`,
+                type: 'income',
+                amount: amount,
+                date: new Date().toISOString().split('T')[0],
+                username: username,
+                adminAction: true
+            });
+            
+            localStorage.setItem('history', JSON.stringify(history));
+            
+            // Закрытие модального окна
+            closeModal('addCoinsModal');
+            
+            // Обновление данных
+            loadAdminData();
+            
+            // Уведомление
+            alert(`Начислено ${amount} монет пользователю ${username}!`);
+        }
+        
+        function removeCoinsFromUser() {
+            const username = prompt('Введите логин пользователя:');
+            if (!username) return;
+            
+            const amount = parseInt(prompt('Введите количество монет для списания:'));
+            if (!amount || amount <= 0) return;
+            
+            const reason = prompt('Введите причину списания:');
+            if (!reason) return;
+            
+            // Списание монет
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.username === username);
+            
+            if (userIndex === -1) {
+                alert('Пользователь не найден!');
+                return;
+            }
+            
+            if ((users[userIndex].balance || 0) < amount) {
+                alert('У пользователя недостаточно монет!');
+                return;
+            }
+            
+            users[userIndex].balance = (users[userIndex].balance || 0) - amount;
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Добавление в историю
+            const history = JSON.parse(localStorage.getItem('history') || '[]');
+            history.unshift({
+                id: 'hist_' + Date.now(),
+                title: `Админ: ${reason}`,
+                type: 'expense',
+                amount: amount,
+                date: new Date().toISOString().split('T')[0],
+                username: username,
+                adminAction: true
+            });
+            
+            localStorage.setItem('history', JSON.stringify(history));
+            
+            // Обновление данных
+            loadAdminData();
+            
+            // Уведомление
+            alert(`Списано ${amount} монет у пользователя ${username}!`);
+        }
+        
+        // Другие функции админки
+        function sendNotification() {
+            const message = prompt('Введите текст уведомления для всех пользователей:');
+            if (message) {
+                alert(`Уведомление отправлено: "${message}"`);
+                // В реальном приложении здесь была бы отправка на сервер
+            }
+        }
+        
+        function generateReport() {
+            const reportType = prompt('Выберите тип отчета:\n1. По пользователям\n2. По заданиям\n3. По транзакциям');
+            
+            if (reportType) {
+                alert(`Отчет типа "${reportType}" будет сгенерирован. Эта функция будет реализована позже.`);
+                // В реальном приложении здесь была бы генерация и скачивание отчета
+            }
+        }
+        
+        function saveSettings(event) {
+            event.preventDefault();
+            
+            const settings = {
+                schoolName: document.getElementById('schoolName').value,
+                defaultBalance: parseInt(document.getElementById('defaultBalance').value) || 100,
+                coinRate: parseFloat(document.getElementById('coinRate').value) || 1,
+                historyDays: parseInt(document.getElementById('historyDays').value) || 90,
+                maxPrice: parseInt(document.getElementById('maxPrice').value) || 1000,
+                autoBonus: document.getElementById('autoBonus').value
+            };
+            
+            localStorage.setItem('systemSettings', JSON.stringify(settings));
+            closeModal('settingsModal');
+            
+            alert('Настройки сохранены!');
+        }
+        
+        // Функции, которые нужно добавить в другие места
+        function showAddTaskModal() {
+            alert('Форма создания задания будет реализована позже.');
+        }
+        
+        function showAddProductModal() {
+            alert('Форма добавления товара будет реализована позже.');
+        }
+        
+        // Функция выхода (исправленная)
+        window.logout = function() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                // Удаляем текущего пользователя из localStorage
+                localStorage.removeItem('currentUser');
+                
+                // Перенаправляем на страницу входа
+                window.location.href = 'login.html';
+            }
+        };
+    </script>
+</body>
+</html>

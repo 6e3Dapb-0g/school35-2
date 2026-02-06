@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCHOOL NO. 35 - Вход</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1><i class="fas fa-school"></i> SCHOOL NO. 35</h1>
+            <p>Образовательная платформа с аутентификацией</p>
+        </div>
+        
+        <div class="auth-form-container">
+            <h2><i class="fas fa-sign-in-alt"></i> Логин</h2>
+            <form id="loginForm" class="auth-form" method="POST" action="/signin">
+                <div class="form-group">
+                    <label for="loginUsername">Логин</label>
+                    <input type="text" id="loginUsername" name="username" placeholder="Введите логин" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Введите пароль" required>
+                </div>
+                
+                
+                
+                <button type="submit" class="btn-auth">Войти</button>
+                
+                <div class="auth-links">
+                    <p>Зарегистрировать аккаунт? <a href="register">Зарегистрироваться</a></p>
+                </div>
+            </form>
+        </div>
+        
+        <div class="auth-footer">
+            <p>Образовательная платформа с аутентификацией © 2026 SCHOOL NO. 35</p>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/data.js"></script>
+</body>
+</html>
